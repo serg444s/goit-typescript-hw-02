@@ -1,7 +1,13 @@
+import { Image } from "../../types";
 import css from "./ImageCard.module.css";
 import { AiFillLike } from "react-icons/ai";
 
-const ImageCard = ({ image, openModal }) => {
+interface ImageCardProps {
+  image: Image;
+  openModal: (obj: Image) => void;
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ image, openModal }) => {
   return (
     <div className={css.thumb} style={{ borderColor: image.color }}>
       <img

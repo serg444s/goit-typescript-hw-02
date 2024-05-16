@@ -8,17 +8,7 @@ import ImageModal from "../ImageModal/ImageModal";
 import toast, { Toaster } from "react-hot-toast";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loader from "../Loader/Loader";
-
-interface Image {
-  id: string;
-  color: string;
-  alt_description: string;
-  likes: number;
-  urls: {
-    small: string;
-    regular: string;
-  };
-}
+import { Image } from "../../types";
 
 function App() {
   const [query, setQuery] = useState<string>("");
@@ -40,7 +30,10 @@ function App() {
         setError(false);
         setLoading(true);
         const data = await fetchImages(page, query);
-        setImages((prevImages) => [...prevImages, ...data.results]);
+        setImages((prevImages: Image[]): Image[] => [
+          ...prevImages,
+          ...data.results,
+        ]);
         setIsVisible(page < data.total_pages);
       } catch (error) {
         setError(error);
@@ -52,7 +45,7 @@ function App() {
     fetchData();
   }, [page, query]);
 
-  const onHandleSubmit = (value) => {
+  const onHandleSubmit = (value: string): void => {
     setQuery(value);
     setImages([]);
     setPage(1);
@@ -61,18 +54,18 @@ function App() {
     setIsEmpty(false);
   };
 
-  const onLoadMore = () => {
+  const onLoadMore = (): void => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (obj) => {
+  const openModal = (obj: Image): void => {
     setShowModal(true);
     setAlt(obj.alt_description);
     setUrl(obj.urls.regular);
     setDescription(obj.description);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setShowModal(false);
     setAlt("");
     setUrl("");
@@ -88,11 +81,11 @@ function App() {
       {images.length > 0 && (
         <ImageGallery images={images} openModal={openModal} />
       )}
-      {isVisible && !loading && (
-        <LoadMoreBtn onClick={onLoadMore} loading={loading} />
-      )}
+      {isVisible && !loading && <LoadMoreBtn onClick={onLoadMore} />}
       {loading && <Loader />}
-      {!images.length && !isEmpty && <p>Sorry. There are no images...</p>}
+      {!images.length && !isEmpty && !loading && (
+        <p>Sorry. There are no images...</p>
+      )}
       <ImageModal
         url={url}
         alt={alt}
