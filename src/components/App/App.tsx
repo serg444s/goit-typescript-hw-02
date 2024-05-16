@@ -9,18 +9,29 @@ import toast, { Toaster } from "react-hot-toast";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loader from "../Loader/Loader";
 
+interface Image {
+  id: string;
+  color: string;
+  alt_description: string;
+  likes: number;
+  urls: {
+    small: string;
+    regular: string;
+  };
+}
+
 function App() {
-  const [query, setQuery] = useState("");
-  const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [url, setUrl] = useState("");
-  const [alt, setAlt] = useState("");
-  const [description, setDescription] = useState("");
-  const [isEmpty, setIsEmpty] = useState(true);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
+  const [alt, setAlt] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+  const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
     if (!query) return;
