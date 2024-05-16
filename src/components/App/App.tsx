@@ -13,7 +13,7 @@ import { Image } from "../../types";
 function App() {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -23,17 +23,20 @@ function App() {
   const [isEmpty, setIsEmpty] = useState<boolean>(true);
   const [images, setImages] = useState<Image[]>([]);
 
+  interface FetchDataInterface {
+    total_pages: number;
+    results: Image[];
+  }
+
   useEffect(() => {
     if (!query) return;
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         setError(false);
         setLoading(true);
-        const data = await fetchImages(page, query);
-        setImages((prevImages: Image[]): Image[] => [
-          ...prevImages,
-          ...data.results,
-        ]);
+        const data: FetchDataInterface = await fetchImages(page, query);
+
+        setImages((prevImages) => [...prevImages, ...data.results]);
         setIsVisible(page < data.total_pages);
       } catch (error) {
         setError(error);

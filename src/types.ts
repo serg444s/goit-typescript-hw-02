@@ -4,7 +4,6 @@ export interface Image {
   alt_description: string;
   description: string;
   likes: number;
-  total_pages: number;
   urls: {
     small: string;
     regular: string;

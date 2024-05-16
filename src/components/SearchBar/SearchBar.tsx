@@ -16,8 +16,7 @@ const SearchBar: React.FC<SerchBarProps> = ({ onSearch }) => {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    const form = evt.target as HTMLFormElement;
-    if (form.elements.query.value.trim() === "") {
+    if (query.trim() === "") {
       toast.error("Please enter search term!");
       setQuery("");
       return;
